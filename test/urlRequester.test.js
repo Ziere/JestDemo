@@ -15,7 +15,7 @@ describe('listFilesInDirectorySync', () => {
 
   test('includes all files in the directory in the summary', () => {
     const urlRequester = require('../demoMock/urlRequester');
-    return urlRequester.urlRequester('/path/to').then((response) => {
+    return urlRequester('to').then((response) => {
       expect(response).toBe(MOCK_DATA['to']);
     });
 
