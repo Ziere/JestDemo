@@ -1,0 +1,20 @@
+{
+  "name": "jest-demo",
+  "version": "1.0.0",
+  "description": "Jest demo",
+  "scripts": {
+    "test": "jest",
+    "testw": "jest --watch",
+    "testc": "jest --coverage --silent"
+  },
+  "keywords": [
+    "jest",
+    "demo",
+    "test"
+  ],
+  "author": "Francisco Moreno",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^20.0.4"
+  }
+}

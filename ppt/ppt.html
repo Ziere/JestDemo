@@ -1,0 +1,749 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Jest presentation</title>
+  <style type="text/css">
+    body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #222;
+  font-size: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  background-color: #f7f7f7;
+}
+
+.slide-content {
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+  margin: 80px auto 0 auto;
+  padding: 30px;
+
+  font-weight: 200;
+  font-size: 200%;
+  line-height: 1.375;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.arrow {
+  width: 0; height: 0;
+  border: 30px solid #333;
+  float: left;
+  margin-right: 30px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.prev {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+
+  border-left-width: 0;
+  border-right-width: 50px;
+}
+
+.next {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+
+  border-left-width: 50px;
+  border-right-width: 0;
+}
+
+.prev:hover {
+  border-right-color: #888;
+  cursor: pointer;
+}
+
+.next:hover {
+  border-left-color: #888;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 300%;
+  line-height: 1.2;
+  text-align: center;
+  margin: 170px 0 0;
+}
+
+h2 {
+  font-size: 100%;
+  line-height: 1.2;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: 200;
+}
+
+h3 {
+  font-size: 140%;
+  line-height: 1.2;
+  border-bottom: 1px solid #aaa;
+  margin: 0;
+  padding-bottom: 15px;
+}
+
+ul {
+  padding: 20px 0 0 60px;
+  font-weight: 200;
+  line-height: 1.375;
+}
+
+.author h1 {
+  font-size: 170%;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.author h3 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 95%;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: #44a4dd;
+}
+
+a:hover {
+  color: #66b5ff;
+}
+
+pre {
+  font-size: 60%;
+  line-height: 1.3;
+}
+
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 1;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 3px;
+  background-color: #b4b4b4;
+
+  -webkit-transition: width 0.05s ease-out;
+  -moz-transition: width 0.05s ease-out;
+  -o-transition: width 0.05s ease-out;
+  transition: width 0.05s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 850px) {
+
+  body {
+    font-size: 70%;
+  }
+
+  .slide-content {
+    width: auto;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  h1 {
+    margin-top: 120px;
+  }
+
+  .prev, .prev:hover {
+    border-right-color: rgba(135, 135, 135, 0.5);
+  }
+
+  .next, .next:hover {
+    border-left-color: rgba(135, 135, 135, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 50%;
+    overflow: hidden;
+  }
+
+  .slide-content {
+    padding: 10px;
+    margin-top: 10px;
+    height: 340px;
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  ul {
+    padding-left: 25px;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: letter;
+  }
+
+  .hidden {
+    display: inline;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  body {
+    margin: 0 auto !important;
+    border: 0;
+    padding: 0;
+    float: none !important;
+    overflow: visible;
+    background: none !important;
+    font-size: 52%;
+  }
+
+  .progress, .controls {
+    display: none;
+  }
+
+  .slide {
+    position: static;
+  }
+
+  .slide-content {
+    border: 1px solid #222;
+    margin-top: 0;
+    margin-bottom: 40px;
+    height: 3.5in;
+    overflow: visible;
+  }
+
+  .slide:nth-child(even) {
+    /* 2 slides per page */
+    page-break-before: always;
+  }
+}
+
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+
+  </style>
+</head>
+<body>
+    <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="slide" id="slide-1">
+    <section class="slide-content"><h1 id="-span-style-color-red-j-span-est"><span style="color:red">J</span>est</h1>
+<hr>
+<h2 id="delightful-javascript-testing">Delightful JavaScript Testing</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
+    <section class="slide-content"><h3 id="index-">Index:</h3>
+<ul>
+<li>Who am I?</li>
+<li>What is <strong>Jest</strong>?</li>
+<li>Why <strong>Jest</strong>?</li>
+<li>How to install <strong>Jest</strong></li>
+<li>Your first test</li>
+<li>Advanced uses</li>
+<li>Conclussions</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h3 id="who-am-i-">Who am I?</h3>
+<ul>
+<li>Francisco Moreno Arcas (Fran Cook)</li>
+<li>NodeJS Developer @ Ciklum for Thomas Cook</li>
+<li>Experience un AI, Data Analisys &amp; Backend Development</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
+    <section class="slide-content"><h3 id="what-is-jest-">What is Jest?:</h3>
+<ul>
+<li><strong>Testing</strong> and <strong>mocking</strong> solution for nodejs</li>
+<li>Developed and maintained by Facebook</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="why-jest-">Why Jest?</h3>
+<ul>
+<li>You can test your Javascript code, including React, Angular, Vue.</li>
+<li>Is able to test in the backend and frontend as well</li>
+<li>Is really easy to setup,  great (and fast) watch mode and coverage report in the same package.</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h3 id="how-to-install-jest">How to install Jest</h3>
+<ol>
+<li>Install node in your system (nodejs version &gt;7 desirable)</li>
+<li><span style="color:blue"><code>mkdir project</code></span></li>
+<li><span style="color:blue"><code>cd project</code></span></li>
+<li><span style="color:blue"><code>npm init</code></span> (setup a basic project in nodejs)</li>
+<li><span style="color:blue"><code>npm install --save-dev jest</code></span> (saving jest in the dev dependencies)</li>
+</ol>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="your-first-test-using-jest">Your first test using Jest</h3>
+<p>add.js</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b</span>) </span>{
+  <span class="hljs-keyword">return</span> a + b;
+}
+
+<span class="hljs-built_in">module</span>.exports = add;</code></pre>
+<p>add-test.js</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> add = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./add'</span>);
+describe(<span class="hljs-string">'add'</span>, () =&gt; {
+  it(<span class="hljs-string">'should add two numbers'</span>, () =&gt; {
+    expect(add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)).toBe(<span class="hljs-number">3</span>);
+  });
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><p>output</p>
+<pre><code>Jest v20.0.4 node v7.4.0 linux/amd64
+
+PASS  ./add-test.js
+  add
+   ✓ should add two numbers (4ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.202s, estimated 1s
+Ran all test suites.</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h3 id="advanced-uses-mocking-">Advanced uses (mocking)</h3>
+<p>Example of mocking a function</p>
+<pre><code>    jest.mock(&#39;./add&#39;);
+    const addMock = require(&#39;./add&#39;);
+    addMock.mockImplementation(() =&gt; 3);
+    console.log(addMock(5, 2));</code></pre>
+<p>Jest give us sugar!</p>
+<pre><code>    expect(addMock).toBeCalled();
+    expect(addMock).toBeCalledWith(5,2);
+    expect(addMock(5, 2)).toBe(3);</code></pre>
+<p>But you still can call addMock.mock.call to retrive information about the mock usage</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h3 id="advanced-uses-manual-mocking-1-4-">Advanced uses (manual mocking) (1/4)</h3>
+<p>Used when you need to mock resources that hit the real world, a real database or a web/cloud resource </p>
+<p>Tree directory and files</p>
+<pre><code class="lang-bash">├── __mocks__
+│   └── fs.js
+├── node_modules
+├── package.json
+├── fileSummarizer.js
+└── fileSummarizer.test.js</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="advanced-uses-manual-mocking-2-4-">Advanced uses (manual mocking) (2/4)</h3>
+<p>fileSummarizer.js</p>
+<pre><code class="lang-javascript"><span class="hljs-meta">'use strict'</span>;
+
+<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">summarizeFilesInDirectorySync</span>(<span class="hljs-params">directory</span>) </span>{
+  <span class="hljs-keyword">return</span> fs.readdirSync(directory).map(fileName =&gt; ({
+    directory,
+    fileName,
+  }));
+}
+
+exports.summarizeFilesInDirectorySync = summarizeFilesInDirectorySync;</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h3 id="advanced-uses-manual-mocking-3-4-">Advanced uses (manual mocking) (3/4)</h3>
+<p>fs.js (mock)</p>
+<pre><code class="lang-javascript"><span class="hljs-meta">'use strict'</span>;
+
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+
+<span class="hljs-keyword">const</span> fs = jest.genMockFromModule(<span class="hljs-string">'fs'</span>);
+
+<span class="hljs-comment">// This is a custom function that our tests can use during setup to specify</span>
+<span class="hljs-comment">// what the files on the "mock" filesystem should look like when any of the</span>
+<span class="hljs-comment">// `fs` APIs are used.</span>
+<span class="hljs-keyword">let</span> mockFiles = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__setMockFiles</span>(<span class="hljs-params">newMockFiles</span>) </span>{
+  mockFiles = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> file <span class="hljs-keyword">in</span> newMockFiles) {
+    <span class="hljs-keyword">const</span> dir = path.dirname(file);
+
+    <span class="hljs-keyword">if</span> (!mockFiles[dir]) {
+      mockFiles[dir] = [];
+    }
+    mockFiles[dir].push(path.basename(file));
+  }
+}
+
+<span class="hljs-comment">// A custom version of `readdirSync` that reads from the special mocked out</span>
+<span class="hljs-comment">// file list set via __setMockFiles</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">readdirSync</span>(<span class="hljs-params">directoryPath</span>) </span>{
+  <span class="hljs-keyword">return</span> mockFiles[directoryPath] || [];
+}
+
+fs.__setMockFiles = __setMockFiles;
+fs.readdirSync = readdirSync;
+
+<span class="hljs-built_in">module</span>.exports = fs;</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="advanced-uses-manual-mocking-4-4-">Advanced uses (manual mocking) (4/4)</h3>
+<p>fileSummarizer.test.js</p>
+<pre><code class="lang-javascript"><span class="hljs-meta">'use strict'</span>;
+
+jest.mock(<span class="hljs-string">'fs'</span>);
+
+describe(<span class="hljs-string">'listFilesInDirectorySync'</span>, () =&gt; {
+  <span class="hljs-keyword">const</span> MOCK_FILE_INFO = {
+    <span class="hljs-string">'/path/to/file1.js'</span>: <span class="hljs-string">'console.log("file1 contents");'</span>,
+    <span class="hljs-string">'/path/to/file2.txt'</span>: <span class="hljs-string">'file2 contents'</span>,
+  };
+
+  beforeEach(() =&gt; {
+    <span class="hljs-comment">// Set up some mocked out file info before each test</span>
+    <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>).__setMockFiles(MOCK_FILE_INFO);
+  });
+
+  test(<span class="hljs-string">'includes all files in the directory in the summary'</span>, () =&gt; {
+    <span class="hljs-keyword">const</span> FileSummarizer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./fileSummarizer'</span>);
+    <span class="hljs-keyword">const</span> fileSummary = FileSummarizer.summarizeFilesInDirectorySync(
+      <span class="hljs-string">'/path/to'</span>
+    );    
+    expect(fileSummary.length).toBe(<span class="hljs-number">2</span>);
+  });
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="conclussion">Conclussion</h3>
+<ul>
+<li>One package for multiple purpose</li>
+<li>Cosy and easy to use</li>
+<li>Strong watch mode</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
+    <section class="slide-content"><h3 id="environment-notes">Environment notes</h3>
+<p>All the test can be run automaticly if meet the following expression</p>
+<p><strong>/<strong>tests</strong>/</strong>/<em>.js?(x),**/?(</em>.)(spec|test).js?(x)</p>
+<h1 id="thanks">Thanks</h1>
+</section>
+  </div>
+  <div class="slide hidden author-slide" id="slide-16">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Francisco Moreno</h1>
+    <h3 class="email">
+      <a href="mailto:fmo@ciklum.com">fmo@ciklum.com</a>
+    </h3>
+</div>
+</section>
+  </div>
+
+  <div class="controls">
+    <div class="arrow prev"></div>
+    <div class="arrow next"></div>
+  </div>
+
+
+  <script type="text/javascript">
+    /**
+ * Returns the current page number of the presentation.
+ */
+function currentPosition() {
+  return parseInt(document.querySelector('.slide:not(.hidden)').id.slice(6));
+}
+
+
+/**
+ * Navigates forward n pages
+ * If n is negative, we will navigate in reverse
+ */
+function navigate(n) {
+  var position = currentPosition();
+  var numSlides = document.getElementsByClassName('slide').length;
+
+  /* Positions are 1-indexed, so we need to add and subtract 1 */
+  var nextPosition = (position - 1 + n) % numSlides + 1;
+
+  /* Normalize nextPosition in-case of a negative modulo result */
+  nextPosition = (nextPosition - 1 + numSlides) % numSlides + 1;
+
+  document.getElementById('slide-' + position).classList.add('hidden');
+  document.getElementById('slide-' + nextPosition).classList.remove('hidden');
+
+  updateProgress();
+  updateURL();
+  updateTabIndex();
+}
+
+
+/**
+ * Updates the current URL to include a hashtag of the current page number.
+ */
+function updateURL() {
+  try {
+    window.history.replaceState({} , null, '#' + currentPosition());
+  } catch (e) {
+    window.location.hash = currentPosition();
+  }
+}
+
+
+/**
+ * Sets the progress indicator.
+ */
+function updateProgress() {
+  var progressBar = document.querySelector('.progress-bar');
+
+  if (progressBar !== null) {
+    var numSlides = document.getElementsByClassName('slide').length;
+    var position = currentPosition() - 1;
+    var percent = (numSlides === 1) ? 100 : 100 * position / (numSlides - 1);
+    progressBar.style.width = percent.toString() + '%';
+  }
+}
+
+
+/**
+ * Removes tabindex property from all links on the current slide, sets
+ * tabindex = -1 for all links on other slides. Prevents slides from appearing
+ * out of control.
+ */
+function updateTabIndex() {
+  var allLinks = document.querySelectorAll('.slide a');
+  var position = currentPosition();
+  var currentPageLinks = document.getElementById('slide-' + position).querySelectorAll('a');
+  var i;
+
+  for (i = 0; i < allLinks.length; i++) {
+    allLinks[i].setAttribute('tabindex', -1);
+  }
+
+  for (i = 0; i < currentPageLinks.length; i++) {
+    currentPageLinks[i].removeAttribute('tabindex');
+  }
+}
+
+/**
+ * Determines whether or not we are currently in full screen mode
+ */
+function isFullScreen() {
+  return document.fullscreenElement ||
+         document.mozFullScreenElement ||
+         document.webkitFullscreenElement ||
+         document.msFullscreenElement;
+}
+
+/**
+ * Toggle fullScreen mode on document element.
+ * Works on chrome (>= 15), firefox (>= 9), ie (>= 11), opera(>= 12.1), safari (>= 5).
+ */
+function toggleFullScreen() {
+  /* Convenient renames */
+  var docElem = document.documentElement;
+  var doc = document;
+
+  docElem.requestFullscreen =
+      docElem.requestFullscreen ||
+      docElem.msRequestFullscreen ||
+      docElem.mozRequestFullScreen ||
+      docElem.webkitRequestFullscreen.bind(docElem, Element.ALLOW_KEYBOARD_INPUT);
+
+  doc.exitFullscreen =
+      doc.exitFullscreen ||
+      doc.msExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.webkitExitFullscreen;
+
+  isFullScreen() ? doc.exitFullscreen() : docElem.requestFullscreen();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Update the tabindex to prevent weird slide transitioning
+  updateTabIndex();
+
+  // If the location hash specifies a page number, go to it.
+  var page = window.location.hash.slice(1);
+  if (page) {
+    navigate(parseInt(page) - 1);
+  }
+
+  document.onkeydown = function (e) {
+    var kc = e.keyCode;
+
+    // left, down, H, J, backspace, PgUp - BACK
+    // up, right, K, L, space, PgDn - FORWARD
+    // enter - FULLSCREEN
+    if (kc === 37 || kc === 40 || kc === 8 || kc === 72 || kc === 74 || kc === 33) {
+      navigate(-1);
+    } else if (kc === 38 || kc === 39 || kc === 32 || kc === 75 || kc === 76 || kc === 34) {
+      navigate(1);
+    } else if (kc === 13) {
+      toggleFullScreen();
+    }
+  };
+
+  if (document.querySelector('.next') && document.querySelector('.prev')) {
+    document.querySelector('.next').onclick = function (e) {
+      e.preventDefault();
+      navigate(1);
+    };
+
+    document.querySelector('.prev').onclick = function (e) {
+      e.preventDefault();
+      navigate(-1);
+    };
+  }
+});
+
+
+  </script>
+</body>
+</html>
