@@ -388,7 +388,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 <ul>
 <li>Francisco Moreno Arcas (Fran Cook)</li>
 <li>NodeJS Developer @ Ciklum for Thomas Cook</li>
-<li>Experience un AI, Data Analisys &amp; Backend Development</li>
+<li>Experience in AI, Data Analisys &amp; Backend Development</li>
 </ul>
 </section>
   </div>
@@ -431,7 +431,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 <p>add-test.js</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> add = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./add'</span>);
 describe(<span class="hljs-string">'add'</span>, () =&gt; {
-  it(<span class="hljs-string">'should add two numbers'</span>, () =&gt; {
+  it(<span class="hljs-string">'1 + 2 = 3'</span>, () =&gt; {
     expect(add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)).toBe(<span class="hljs-number">3</span>);
   });
 });</code></pre>
@@ -443,7 +443,7 @@ describe(<span class="hljs-string">'add'</span>, () =&gt; {
 
 PASS  ./add-test.js
   add
-   ✓ should add two numbers (4ms)
+   ✓ 1 + 2 = 3 (4ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
@@ -463,7 +463,7 @@ Ran all test suites.</code></pre>
 <pre><code>    expect(addMock).toBeCalled();
     expect(addMock).toBeCalledWith(5,2);
     expect(addMock(5, 2)).toBe(3);</code></pre>
-<p>But you still can call addMock.mock.call to retrive information about the mock usage</p>
+<p>But you still can call addMock.mock.call to retrieve information about the mock usage</p>
 </section>
   </div>
   <div class="slide hidden" id="slide-10">
